@@ -1,121 +1,434 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>PixPort — Free WebP to JPG Converter | Privacy Policy</title>
-  <style>
-    :root { --bg:#16161d; --surface:#1e1e27; --border:#32323f; --text:#ececf1; --dim:#9b9ba8; --accent:#7c5cff; --success:#4ade80; }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--bg); color: var(--text); font-family: -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; line-height: 1.7; }
-    .wrap { max-width: 760px; margin: 0 auto; padding: 48px 24px 64px; }
-    h1 { font-size: 28px; margin-bottom: 8px; }
-    .tagline { color: var(--dim); font-size: 16px; margin-bottom: 28px; }
-    h2 { font-size: 19px; margin: 34px 0 12px; color: var(--accent); }
-    h3 { font-size: 15px; margin: 20px 0 6px; }
-    p, li { font-size: 14.5px; margin-bottom: 10px; }
-    ul, ol { padding-left: 22px; margin-bottom: 12px; }
-    .pill { display: inline-block; background: rgba(74,222,128,.12); color: var(--success); border: 1px solid rgba(74,222,128,.4); border-radius: 999px; padding: 2px 12px; font-size: 12.5px; font-weight: 700; margin-bottom: 20px; }
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 20px 22px; margin: 18px 0; }
-    a { color: var(--accent); }
-    .store-btns { display: flex; gap: 12px; flex-wrap: wrap; margin: 18px 0; }
-    .store-btns a { border: 1px solid var(--border); border-radius: 10px; padding: 10px 18px; text-decoration: none; font-weight: 600; font-size: 14px; }
-    .store-btns a:hover { border-color: var(--accent); }
-    hr { border: none; border-top: 1px solid var(--border); margin: 28px 0; }
-  </style>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>PixPort — Free Image Converter (WebP, AVIF, JPG, PNG, BMP, ICO) · 100% Local</title>
+<meta name="description" content="Convert WebP, AVIF, BMP, GIF & ICO images to JPG/PNG right in your browser. 100% local processing — nothing uploaded, no ads, no tracking." />
+<style>
+  :root {
+    --bg:#101016; --surface:#181820; --surface2:#20202b; --border:#26262f;
+    --text:#ececf1; --dim:#93939f; --accent:#7c5cff; --accent2:#63a0ff;
+    --grad: linear-gradient(135deg,#7c5cff,#63a0ff);
+    --success:#4ade80;
+  }
+  * { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body { background:var(--bg); color:var(--text); font-family:-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif; line-height:1.65; }
+  body:not(.zh) .lang-zh { display:none !important; }
+  body.zh .lang-en { display:none !important; }
+  .wrap { max-width:960px; margin:0 auto; padding:0 24px; }
+  a { color:var(--accent); text-decoration:none; }
+  a:hover { text-decoration:none; }
+
+  .nav { position:sticky; top:0; z-index:50; background:rgba(16,16,22,.82); backdrop-filter:blur(10px); border-bottom:1px solid var(--border); }
+  .nav-in { max-width:960px; margin:0 auto; padding:14px 24px; display:flex; align-items:center; gap:16px; }
+  .logo { display:flex; align-items:center; gap:9px; font-weight:800; font-size:17px; margin-right:auto; }
+  .logo-badge { width:26px; height:26px; border-radius:7px; background:var(--grad); color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:800; }
+  .nav a.navlink { color:var(--dim); font-size:13.5px; font-weight:600; }
+  .nav a.navlink:hover { color:var(--text); }
+  .lang-switch { display:flex; border:1px solid var(--border); border-radius:8px; padding:2px; gap:2px; }
+  .ls-btn { background:transparent; border:none; color:var(--dim); font-size:11.5px; font-weight:700; padding:4px 10px; border-radius:6px; cursor:pointer; }
+  .ls-btn.active { background:var(--accent); color:#fff; }
+
+  .hero { text-align:center; padding:72px 0 56px; }
+  .hero-pill { display:inline-block; background:rgba(124,92,255,.12); border:1px solid rgba(124,92,255,.35); color:var(--accent); border-radius:999px; padding:4px 16px; font-size:12.5px; font-weight:700; margin-bottom:22px; }
+  h1.hero-h1 { font-size:42px; line-height:1.15; letter-spacing:-.5px; margin-bottom:18px; }
+  h1.hero-h1 em { font-style:normal; background:linear-gradient(90deg,#a78bff,#63a0ff); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  .hero-sub { color:var(--dim); font-size:17px; max-width:640px; margin:0 auto 30px; }
+  .hero-cta { display:flex; gap:14px; justify-content:center; flex-wrap:wrap; margin-bottom:14px; }
+  .btn { display:inline-flex; align-items:center; gap:8px; border-radius:10px; padding:13px 26px; font-weight:700; font-size:15px; cursor:pointer; transition:all .15s; border:none; }
+  .btn-primary { background:var(--grad); color:#fff; box-shadow:0 2px 14px rgba(124,92,255,.35); }
+  .btn-primary:hover { transform:translateY(-2px); box-shadow:0 4px 22px rgba(124,92,255,.45); }
+  .btn-ghost { background:transparent; border:1px solid var(--border); color:var(--text); }
+  .btn-ghost:hover { border-color:var(--accent); }
+  .hero-note { color:var(--dim); font-size:12.5px; }
+
+  section { padding:52px 0; }
+  .kicker { color:var(--accent); font-size:12.5px; font-weight:800; letter-spacing:1.5px; text-transform:uppercase; margin-bottom:8px; }
+  h2.sec { font-size:28px; letter-spacing:-.3px; margin-bottom:10px; }
+  .sec-sub { color:var(--dim); margin-bottom:34px; max-width:640px; }
+
+  .grid3 { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }
+  .feat { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; transition:border-color .15s, transform .15s; }
+  .feat:hover { border-color:rgba(124,92,255,.5); transform:translateY(-2px); }
+  .feat-ico { font-size:22px; margin-bottom:10px; }
+  .feat h3 { font-size:15px; margin-bottom:6px; }
+  .feat p { color:var(--dim); font-size:13.5px; }
+
+  .steps { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; counter-reset:s; }
+  .step { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:22px; }
+  .step::before { counter-increment:s; content:counter(s); display:inline-flex; width:28px; height:28px; border-radius:8px; background:var(--grad); color:#fff; align-items:center; justify-content:center; font-weight:800; font-size:13px; margin-bottom:12px; }
+  .step h3 { font-size:14.5px; margin-bottom:6px; }
+  .step p { color:var(--dim); font-size:13px; }
+
+  .price-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; max-width:720px; }
+  .price-card { background:var(--surface); border:1px solid var(--border); border-radius:16px; padding:28px; }
+  .price-card.hot { border-color:rgba(124,92,255,.55); box-shadow:0 4px 30px rgba(124,92,255,.15); position:relative; }
+  .hot-tag { position:absolute; top:-11px; left:24px; background:var(--grad); color:#fff; font-size:10.5px; font-weight:800; letter-spacing:.8px; border-radius:999px; padding:3px 12px; }
+  .plan-name { color:var(--dim); font-weight:700; font-size:13px; letter-spacing:.6px; text-transform:uppercase; }
+  .price { font-size:36px; font-weight:800; margin:8px 0 2px; }
+  .price s { color:var(--dim); font-size:16px; font-weight:400; margin-right:8px; }
+  .per { color:var(--dim); font-size:13px; margin-bottom:18px; }
+  .plist { list-style:none; margin-bottom:22px; }
+  .plist li { padding:5px 0 5px 26px; position:relative; font-size:13.5px; }
+  .plist li::before { content:"✓"; position:absolute; left:0; color:var(--success); font-weight:800; }
+  .pbtn { width:100%; text-align:center; border-radius:10px; padding:11px; font-weight:700; font-size:14px; }
+  .pbtn-hot { background:var(--grad); color:#fff; display:block; }
+  .pbtn-hot:hover { filter:brightness(1.12); }
+  .pbtn-free { background:var(--surface2); border:1px solid var(--border); color:var(--text); display:block; }
+  .pbtn-free:hover { border-color:var(--accent); }
+
+  .faq details { background:var(--surface); border:1px solid var(--border); border-radius:12px; padding:16px 20px; margin-bottom:10px; }
+  .faq summary { font-weight:700; cursor:pointer; font-size:14.5px; }
+  .faq p { color:var(--dim); margin-top:10px; font-size:13.5px; }
+
+  .legal { background:var(--surface); border:1px solid var(--border); border-radius:14px; padding:28px 32px; margin-bottom:22px; }
+  .legal h2 { font-size:20px; margin:26px 0 10px; color:var(--accent); }
+  .legal h2:first-of-type { margin-top:0; }
+  .legal h3 { font-size:15px; margin:18px 0 6px; }
+  .legal p, .legal li { font-size:13.8px; margin-bottom:8px; }
+  .legal ul, .legal ol { padding-left:22px; }
+  .legal .card { background:var(--surface2); border-color:var(--border); border-radius:10px; padding:14px 18px; margin:12px 0; }
+
+  footer { border-top:1px solid var(--border); margin-top:40px; padding:34px 0 44px; }
+  .foot-links { display:flex; gap:22px; flex-wrap:wrap; margin-bottom:14px; }
+  .foot-links a { color:var(--dim); font-size:13px; }
+  .copyright { color:var(--dim); font-size:12px; }
+
+  @media (max-width:720px) {
+    .grid3, .steps { grid-template-columns:1fr; }
+    .price-grid { grid-template-columns:1fr; }
+    h1.hero-h1 { font-size:31px; }
+    .nav a.navlink { display:none; }
+  }
+</style>
 </head>
 <body>
-  <div class="wrap">
-    <h1>PixPort</h1>
-    <p class="tagline">Free image converter — WebP, AVIF, JPG, PNG, BMP, GIF, ICO · 100% local, nothing uploaded</p>
-    <span class="pill">🔒 Privacy-first · No tracking · No ads</span>
 
-    <p>PixPort is a browser extension that converts images between formats entirely on your device. Convert a single image with one right-click, or batch-convert with automatic ZIP packaging.</p>
-
-    <!-- 商店上线后取消注释并填入链接：
-    <div class="store-btns">
-      <a href="https://chromewebstore.google.com/detail/xxx" target="_blank" rel="noreferrer">Chrome Web Store</a>
-      <a href="https://microsoftedge.microsoft.com/addons/detail/xxx" target="_blank" rel="noreferrer">Edge Add-ons</a>
+<div class="nav">
+  <div class="nav-in">
+    <div class="logo"><span class="logo-badge">P</span> PixPort</div>
+    <a class="navlink" href="#features"><span class="lang-en">Features</span><span class="lang-zh">功能</span></a>
+    <a class="navlink" href="#how"><span class="lang-en">How it works</span><span class="lang-zh">使用方法</span></a>
+    <a class="navlink" href="#pricing"><span class="lang-en">Pro</span><span class="lang-zh">升级</span></a>
+    <a class="navlink" href="#activate"><span class="lang-en">Activate</span><span class="lang-zh">激活</span></a>
+    <a class="navlink" href="#faq"><span class="lang-en">FAQ</span><span class="lang-zh">常见问题</span></a>
+    <a class="navlink" href="#privacy"><span class="lang-en">Privacy</span><span class="lang-zh">隐私</span></a>
+    <div class="lang-switch">
+      <button class="ls-btn active" data-l="en">EN</button>
+      <button class="ls-btn" data-l="zh">中文</button>
     </div>
-    -->
-
-    <h2>Privacy Policy</h2>
-    <p>Effective date: August 2026 · Applies to the PixPort browser extension.</p>
-
-    <div class="card">
-      <h3>Short version</h3>
-      <p><strong>We collect nothing. We upload nothing. We track no one.</strong></p>
-      <ul>
-        <li>All image conversions run locally in your browser — your images never leave your device.</li>
-        <li>The extension contains no analytics, no advertising, no tracking scripts.</li>
-        <li>We do not collect, store, or share any personal data, browsing history, or image content.</li>
-        <li>The only network requests the extension makes are: license key verification when you activate Pro (via our proxy server and Creem.io), and opening the upgrade checkout page when you click "Upgrade".</li>
-      </ul>
-    </div>
-
-    <h3>Details</h3>
-    <p><strong>1. Image files.</strong> Images you convert are processed in your browser's memory using standard browser APIs. They are never transmitted to us or to any third party. When you close the extension, nothing remains on our side — because there was never anything on our side.</p>
-    <p><strong>2. Local storage.</strong> Your preferences (output format, quality, save location, interface language) and, if you purchase Pro, your license key are stored locally in your browser using chrome.storage. This data never leaves your device and you can erase it anytime by removing the extension.</p>
-    <p><strong>3. License activation (Pro only).</strong> When you activate a Pro license, the license key you enter is sent — through our proxy server — to our payment processor Creem.io for verification. Creem acts as the Merchant of Record: their privacy policy governs the payment and license data they process. We never receive your card details.</p>
-    <p><strong>4. What we can see.</strong> Nothing about your usage. We do not count conversions, do not fingerprint devices, and do not use cookies.</p>
-    <p><strong>5. Contact.</strong> Questions about this policy: <a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a></p>
-
-    <hr />
-
-    <h2>How to activate PixPort Pro</h2>
-    <ol>
-      <li>Complete your purchase — the license key appears on the payment success page and in your email receipt.</li>
-      <li>Open the PixPort extension → click the ⚙ Settings icon.</li>
-      <li>Paste the license key → click <strong>Activate</strong>. All Pro features unlock instantly, on up to 5 devices.</li>
-    </ol>
-
-    <h3>Didn't receive your license key?</h3>
-    <ul>
-      <li>The key was displayed on the payment success page — if that tab is still open, copy it there.</li>
-      <li>Check your spam/junk folder for an email from Creem.</li>
-      <li>Log into the Creem customer portal with your purchase email to view your key.</li>
-      <li>Still stuck? Email <a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a> with your payment receipt and we'll resend your key manually.</li>
-    </ul>
-
-    <hr />
-
-    <h2>隐私政策（中文版）</h2>
-    <p>生效日期：2026年8月 · 适用于 PixPort 浏览器扩展。</p>
-
-    <div class="card">
-      <h3>一句话版本</h3>
-      <p><strong>我们不收集任何数据、不上传任何文件、不追踪任何用户。</strong></p>
-      <ul>
-        <li>所有图片转换均在你的浏览器本地完成——图片永远不会离开你的设备。</li>
-        <li>扩展内无统计分析、无广告、无追踪脚本。</li>
-        <li>我们不收集、不存储、不共享任何个人数据、浏览记录或图片内容。</li>
-        <li>扩展唯一的网络请求：激活 Pro 时校验许可密钥（经我们的代理服务器与 Creem.io），以及点击"升级"时打开购买页面。</li>
-      </ul>
-    </div>
-
-    <h3>详细说明</h3>
-    <p><strong>1. 图片文件。</strong>你转换的图片仅使用浏览器标准接口在浏览器内存中处理，不会传输给我们或任何第三方。关闭扩展后我方不留存任何内容——因为我们从未收到过。</p>
-    <p><strong>2. 本地存储。</strong>你的偏好设置（输出格式、画质、保存位置、界面语言）以及购买 Pro 后的许可密钥，均保存在你的浏览器本地，不会离开你的设备，随时可通过移除扩展清除。</p>
-    <p><strong>3. 许可激活（仅 Pro）。</strong>激活 Pro 时，你输入的密钥会经我们的代理服务器发送至支付处理方 Creem.io 进行验证。Creem 作为记录商户（Merchant of Record），其处理的支付与许可数据适用 Creem 的隐私政策。我们永远无法接触到你的银行卡信息。</p>
-    <p><strong>4. 我们能看到什么。</strong>关于你的使用行为——什么 都看不到。我们不统计转换次数、不做设备指纹、不使用 Cookie。</p>
-    <p><strong>5. 联系我们。</strong>对本政策有疑问：<a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a></p>
-
-    <hr />
-
-    <h2>如何激活 PixPort Pro</h2>
-    <ol>
-      <li>完成购买——许可密钥会显示在支付成功页面，并发送至你的邮箱。</li>
-      <li>打开 PixPort 扩展 → 点击 ⚙ 设置图标。</li>
-      <li>粘贴密钥 → 点击 <strong>激活</strong>。全部 Pro 功能立即解锁，支持 5 台设备。</li>
-    </ol>
-
-    <h3>没收到密钥邮件？</h3>
-    <ul>
-      <li>密钥在支付成功页面上显示过——如果那个页面还开着，直接复制即可。</li>
-      <li>检查垃圾邮件文件夹，搜索 "Creem"。</li>
-      <li>用付款邮箱登录 Creem 客户门户查看你的密钥。</li>
-      <li>仍然找不到？发邮件至 <a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a>，附上支付凭证，我们会手动补发。</li>
-    </ul>
   </div>
+</div>
+
+<div class="wrap">
+
+  <section class="hero">
+    <span class="hero-pill">🔒 <span class="lang-en">100% LOCAL · NOTHING UPLOADED · NO ADS</span><span class="lang-zh">纯本地处理 · 不上传 · 无广告</span></span>
+    <h1 class="hero-h1"><span class="lang-en">Images won't open or send?<br /><em>Convert them in one click.</em></span><span class="lang-zh">图片打不开、发不出去？<br /><em>一键转换。</em></span></h1>
+    <p class="hero-sub"><span class="lang-en">PixPort converts WebP, AVIF, BMP, GIF &amp; ICO images to JPG/PNG — right inside your browser. Your files never leave your device.</span><span class="lang-zh">PixPort 在浏览器内转换 WebP、AVIF、BMP、GIF 和 ICO 图片——文件永不离开你的设备。</span></p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#" id="ctaChrome"><span class="lang-en">Add to Chrome — Free</span><span class="lang-zh">免费添加到 Chrome</span></a>
+      <a class="btn btn-ghost" href="#" id="ctaEdge"><span class="lang-en">Add to Edge</span><span class="lang-zh">添加到 Edge</span></a>
+    </div>
+    <p class="hero-note"><span class="lang-en">Free forever for single images · No sign-up · Works offline</span><span class="lang-zh">单张转换永久免费 · 无需注册 · 支持离线</span></p>
+  </section>
+
+  <section id="features">
+    <p class="kicker"><span class="lang-en">Why PixPort</span><span class="lang-zh">为什么选 PixPort</span></p>
+    <h2 class="sec"><span class="lang-en">Everything you need. Nothing you don't.</span><span class="lang-zh">你需要的都有，没有多余的。</span></h2>
+    <p class="sec-sub"><span class="lang-en">Built by a developer who got tired of ad-stuffed converters that force you to upload private photos to random servers.</span><span class="lang-zh">开发者受够了满屏广告、强迫你把私人照片上传到陌生服务器的转换器，所以自己写了一个。</span></p>
+    <div class="grid3 lang-en">
+      <div class="feat"><div class="feat-ico">🖱️</div><h3>One-click convert</h3><p>Right-click any image → Convert to JPG. Drag &amp; drop works too. No menus, no wizards.</p></div>
+      <div class="feat"><div class="feat-ico">📁</div><h3>Batch → one ZIP</h3><p>Drop dozens of files, get a single ZIP. No per-file downloads, no popups.</p></div>
+      <div class="feat"><div class="feat-ico">🔀</div><h3>8 in · 5 out formats</h3><p>WebP, AVIF, BMP, GIF, ICO, JPG, PNG in — JPG, PNG, WebP, BMP, ICO out.</p></div>
+      <div class="feat"><div class="feat-ico">🔒</div><h3>Truly private</h3><p>Conversion runs in your browser. Zero uploads, zero analytics, zero cookies.</p></div>
+      <div class="feat"><div class="feat-ico">🎚️</div><h3>Quality &amp; size control</h3><p>Fine-tune output quality and scale dimensions from 25% to 200%.</p></div>
+      <div class="feat"><div class="feat-ico">🌐</div><h3>English &amp; 中文</h3><p>The interface follows your browser automatically — or switch it yourself.</p></div>
+    </div>
+    <div class="grid3 lang-zh">
+      <div class="feat"><div class="feat-ico">🖱️</div><h3>一键转换</h3><p>右键任意图片 → 转换为 JPG，拖拽同样可用。没有多余步骤。</p></div>
+      <div class="feat"><div class="feat-ico">📁</div><h3>批量 → 一个ZIP</h3><p>一次拖入几十个文件，只下载一个 ZIP 包。</p></div>
+      <div class="feat"><div class="feat-ico">🔀</div><h3>8 种输入 · 5 种输出</h3><p>WebP、AVIF、BMP、GIF、ICO、JPG、PNG 输入 — JPG、PNG、WebP、BMP、ICO 输出。</p></div>
+      <div class="feat"><div class="feat-ico">🔒</div><h3>真隐私</h3><p>转换在你的浏览器内完成。零上传、零统计、零 Cookie。</p></div>
+      <div class="feat"><div class="feat-ico">🎚️</div><h3>画质与尺寸控制</h3><p>自由调节输出画质，尺寸缩放 25% 到 200%。</p></div>
+      <div class="feat"><div class="feat-ico">🌐</div><h3>中英双语</h3><p>界面自动跟随浏览器语言，也可以手动切换。</p></div>
+    </div>
+  </section>
+
+  <section id="how">
+    <p class="kicker"><span class="lang-en">How it works</span><span class="lang-zh">使用方法</span></p>
+    <h2 class="sec"><span class="lang-en">Three steps. That's the whole manual.</span><span class="lang-zh">三步搞定，说明书写完了。</span></h2>
+    <div class="steps lang-en">
+      <div class="step"><h3>Drop your images</h3><p>Drag files into the extension, browse, or just right-click an image on any webpage.</p></div>
+      <div class="step"><h3>Pick a format</h3><p>JPG, PNG, WebP, BMP or ICO. Not sure? JPG opens everywhere.</p></div>
+      <div class="step"><h3>Hit convert</h3><p>Files save straight to your Downloads folder — batch results arrive as one ZIP.</p></div>
+    </div>
+    <div class="steps lang-zh">
+      <div class="step"><h3>拖入图片</h3><p>拖进扩展、点击选择，或直接在网页上右键图片。</p></div>
+      <div class="step"><h3>选个格式</h3><p>JPG、PNG、WebP、BMP 或 ICO。不确定就选 JPG。</p></div>
+      <div class="step"><h3>点转换</h3><p>文件直接保存到下载文件夹——批量结果自动打包成一个 ZIP。</p></div>
+    </div>
+  </section>
+
+  <section id="pricing">
+    <p class="kicker"><span class="lang-en">Pricing</span><span class="lang-zh">定价</span></p>
+    <h2 class="sec"><span class="lang-en">Free gets you far. Pro gets you everything.</span><span class="lang-zh">免费版够用，Pro 拥有全部。</span></h2>
+    <p class="sec-sub"><span class="lang-en">One-time payment. No subscription, no account, no expiration.</span><span class="lang-zh">一次买断。无订阅、无账号、永不过期。</span></p>
+    <div class="price-grid lang-en">
+      <div class="price-card">
+        <div class="plan-name">Free</div>
+        <div class="price">$0</div>
+        <div class="per">forever</div>
+        <ul class="plist">
+          <li>Right-click &amp; drag-drop conversion</li>
+          <li>JPG / PNG output</li>
+          <li>AVIF, WebP, BMP, GIF, ICO input</li>
+          <li>Quality slider</li>
+          <li>No ads · no tracking · ever</li>
+        </ul>
+        <a class="pbtn pbtn-free" href="#" id="freeChrome">Install free</a>
+      </div>
+      <div class="price-card hot">
+        <span class="hot-tag">LAUNCH OFFER</span>
+        <div class="plan-name">Pro — Lifetime</div>
+        <div class="price"><s>$9.99</s>$4.99</div>
+        <div class="per">one-time · yours forever</div>
+        <ul class="plist">
+          <li>Unlimited batch conversion</li>
+          <li>Automatic ZIP packaging</li>
+          <li>All 5 output formats</li>
+          <li>Size scaling 25%–200%</li>
+          <li>Activates on up to 5 devices</li>
+        </ul>
+        <a class="pbtn pbtn-hot" href="https://www.creem.io/payment/prod_3SNvhQLhvpTkQLJKzxIOiU" target="_blank" rel="noreferrer">Get Pro — $4.99</a>
+      </div>
+    </div>
+    <div class="price-grid lang-zh">
+      <div class="price-card">
+        <div class="plan-name">免费版</div>
+        <div class="price">$0</div>
+        <div class="per">永久免费</div>
+        <ul class="plist">
+          <li>右键 &amp; 拖拽转换</li>
+          <li>JPG / PNG 输出</li>
+          <li>AVIF、WebP、BMP、GIF、ICO 输入</li>
+          <li>画质滑杆</li>
+          <li>无广告 · 无追踪 · 永远</li>
+        </ul>
+        <a class="pbtn pbtn-free" href="#" id="freeChromeZh">免费安装</a>
+      </div>
+      <div class="price-card hot">
+        <span class="hot-tag">首发优惠</span>
+        <div class="plan-name">Pro — 永久授权</div>
+        <div class="price"><s>$9.99</s>$4.99</div>
+        <div class="per">一次买断 · 永久使用</div>
+        <ul class="plist">
+          <li>不限量批量转换</li>
+          <li>自动 ZIP 打包</li>
+          <li>全部 5 种输出格式</li>
+          <li>尺寸缩放 25%–200%</li>
+          <li>支持 5 台设备激活</li>
+        </ul>
+        <a class="pbtn pbtn-hot" href="https://www.creem.io/payment/prod_3SNvhQLhvpTkQLJKzxIOiU" target="_blank" rel="noreferrer">升级 Pro · $4.99</a>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq" class="faq">
+    <p class="kicker"><span class="lang-en">FAQ</span><span class="lang-zh">常见问题</span></p>
+    <h2 class="sec"><span class="lang-en">Common questions</span><span class="lang-zh">常见问题</span></h2>
+    <div class="lang-en">
+      <details><summary>What is WebP, and why can't I open it?</summary><p>WebP is a space-saving image format used by many websites. Some apps, messengers and older tools can't open it — PixPort converts it to universally-supported JPG or PNG instantly.</p></details>
+      <details><summary>Are my images uploaded anywhere?</summary><p>No. Every conversion runs locally inside your browser using standard browser APIs. There are no servers on our side receiving your images — we couldn't see them even if we wanted to.</p></details>
+      <details><summary>Is it really free?</summary><p>Yes — converting single images is free forever, with no ads and no watermarks. The one-time Pro upgrade adds unlimited batch conversion with ZIP packaging and size controls.</p></details>
+      <details><summary>Which format should I choose?</summary><p>Not sure? Pick JPG — it opens everywhere. Choose PNG when you need transparency. WebP for smaller web-ready files.</p></details>
+      <details><summary>Where are converted files saved?</summary><p>To your browser's Downloads folder by default. You can also set it to ask every time, or save into a dedicated PixPort folder — in ⚙ Settings.</p></details>
+    </div>
+    <div class="lang-zh">
+      <details><summary>什么是 WebP，为什么打不开？</summary><p>WebP 是很多网站用来节省流量的图片格式，部分应用、聊天工具和旧软件打不开它——PixPort 一键把它转成通用的 JPG 或 PNG。</p></details>
+      <details><summary>我的图片会被上传吗？</summary><p>不会。所有转换都在你的浏览器内用标准浏览器接口完成。我们这边没有任何服务器接收你的图片——想看也看不到。</p></details>
+      <details><summary>真的免费吗？</summary><p>是——单张图片转换永久免费，无广告无水印。一次性 Pro 升级解锁不限量批量转换、ZIP 打包和尺寸控制。</p></details>
+      <details><summary>该选哪个格式？</summary><p>不确定就选 JPG——哪里都能打开。需要透明背景选 PNG，想要更小的网页文件选 WebP。</p></details>
+      <details><summary>转换后的文件存到哪了？</summary><p>默认是浏览器的下载文件夹。也可以在 ⚙ 设置里改成每次询问，或存到专门的 PixPort 文件夹。</p></details>
+    </div>
+  </section>
+
+  <section id="activate">
+    <p class="kicker"><span class="lang-en">Pro activation</span><span class="lang-zh">Pro 激活</span></p>
+    <h2 class="sec"><span class="lang-en">Bought Pro? Activate in 3 steps.</span><span class="lang-zh">已购买？三步完成激活。</span></h2>
+    <div class="legal lang-en">
+      <ol>
+        <li>Complete your purchase — the license key appears on the payment success page and in your email receipt.</li>
+        <li>Open the PixPort extension → click the ⚙ Settings icon.</li>
+        <li>Paste the license key → click <strong>Activate</strong>. All Pro features unlock instantly, on up to 5 devices.</li>
+      </ol>
+      <h3>Didn't receive your license key?</h3>
+      <ul>
+        <li>The key was displayed on the payment success page — if that tab is still open, copy it there.</li>
+        <li>Check your spam/junk folder for an email from Creem.</li>
+        <li>Log into the Creem customer portal with your purchase email to view your key.</li>
+        <li>Still stuck? Email <a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a> with your payment receipt and we'll resend your key manually.</li>
+      </ul>
+    </div>
+    <div class="legal lang-zh">
+      <ol>
+        <li>完成购买——许可密钥会显示在支付成功页面，并发送至你的邮箱。</li>
+        <li>打开 PixPort 扩展 → 点击 ⚙ 设置图标。</li>
+        <li>粘贴密钥 → 点击 <strong>激活</strong>。全部 Pro 功能立即解锁，支持 5 台设备。</li>
+      </ol>
+      <h3>没收到密钥邮件？</h3>
+      <ul>
+        <li>密钥在支付成功页面上显示过——如果那个页面还开着，直接复制即可。</li>
+        <li>检查垃圾邮件文件夹，搜索 "Creem"。</li>
+        <li>用付款邮箱登录 Creem 客户门户查看你的密钥。</li>
+        <li>仍然找不到？发邮件至 <a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a>，附上支付凭证，我们会手动补发。</li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="privacy">
+    <p class="kicker"><span class="lang-en">Legal</span><span class="lang-zh">法律条款</span></p>
+    <h2 class="sec"><span class="lang-en">Privacy Policy</span><span class="lang-zh">隐私政策</span></h2>
+    <div class="legal lang-en">
+      <p>Effective date: August 2026 · Applies to the PixPort browser extension.</p>
+      <div class="card"><p><strong>Short version — we collect nothing, upload nothing, track no one.</strong></p></div>
+      <h3>1. Image files</h3>
+      <p>Images you convert are processed in your browser's memory using standard browser APIs. They are never transmitted to us or to any third party. When you close the extension, nothing remains on our side — because there was never anything on our side.</p>
+      <h3>2. Local storage</h3>
+      <p>Your preferences (output format, quality, save location, interface language) and, if you purchase Pro, your license key are stored locally in your browser using chrome.storage. This data never leaves your device and you can erase it anytime by removing the extension.</p>
+      <h3>3. License activation (Pro only)</h3>
+      <p>When you activate a Pro license, the license key you enter is sent — through our proxy server — to our payment processor Creem.io for verification. Creem acts as the Merchant of Record: their privacy policy governs the payment and license data they process. We never receive your card details.</p>
+      <h3>4. What we can see</h3>
+      <p>Nothing about your usage. We do not count conversions, do not fingerprint devices, and do not use cookies.</p>
+      <h3>5. Contact</h3>
+      <p>Questions about this policy: <a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a></p>
+    </div>
+    <div class="legal lang-zh">
+      <p>生效日期：2026年8月 · 适用于 PixPort 浏览器扩展。</p>
+      <div class="card"><p><strong>一句话版本——我们不收集任何数据、不上传任何文件、不追踪任何用户。</strong></p></div>
+      <h3>1. 图片文件</h3>
+      <p>你转换的图片仅使用浏览器标准接口在浏览器内存中处理，不会传输给我们或任何第三方。关闭扩展后我方不留存任何内容——因为我们从未收到过。</p>
+      <h3>2. 本地存储</h3>
+      <p>你的偏好设置（输出格式、画质、保存位置、界面语言）以及购买 Pro 后的许可密钥，均保存在你的浏览器本地，不会离开你的设备，随时可通过移除扩展清除。</p>
+      <h3>3. 许可激活（仅 Pro）</h3>
+      <p>激活 Pro 时，你输入的密钥会经我们的代理服务器发送至支付处理方 Creem.io 进行验证。Creem 作为记录商户（Merchant of Record），其处理的支付与许可数据适用 Creem 的隐私政策。我们永远无法接触到你的银行卡信息。</p>
+      <h3>4. 我们能看到什么</h3>
+      <p>关于你的使用行为——什么都看不到。我们不统计转换次数、不做设备指纹、不使用 Cookie。</p>
+      <h3>5. 联系我们</h3>
+      <p>对本政策有疑问：<a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a></p>
+    </div>
+  </section>
+
+  <section id="terms">
+    <h2 class="sec"><span class="lang-en">Terms of Service</span><span class="lang-zh">服务条款</span></h2>
+    <div class="legal lang-en">
+      <p>Effective date: August 2026 · Applies to the PixPort extension and PixPort Pro licenses.</p>
+      <div class="card"><p><strong>Summary — one-time purchase · lifetime license · up to 5 devices · 60-day full refund · no subscription.</strong></p></div>
+      <h3>1. The Service</h3>
+      <p>PixPort is a browser extension that converts images between formats locally on your device. The free tier includes single-image conversion; the one-time "PixPort Pro" purchase ($4.99 USD) unlocks batch conversion, ZIP packaging, additional output formats, and size controls.</p>
+      <h3>2. License Grant</h3>
+      <ul>
+        <li>Your Pro license is a personal, non-exclusive, non-transferable, perpetual license.</li>
+        <li>You may activate it on up to five (5) devices for your own use.</li>
+        <li>You may not resell, redistribute, share, or sublicense your license key.</li>
+        <li>We may revoke keys involved in piracy, fraud, or chargeback abuse.</li>
+      </ul>
+      <h3>3. Payment &amp; Delivery</h3>
+      <p>Payments are processed by Creem.io, our Merchant of Record. Taxes are handled by Creem. The license key is delivered instantly on the payment success page and by email. If you did not receive it, see the recovery steps above or contact us.</p>
+      <h3>4. Refund Policy</h3>
+      <ul>
+        <li><strong>60-day full refund</strong>: request anytime within 60 days of purchase by emailing <a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a> with your payment receipt.</li>
+        <li>Refunds are processed via Creem.io; funds typically arrive within 5-10 business days.</li>
+        <li>A refunded license is deactivated and must stop being used.</li>
+        <li>After 60 days, refunds are considered case-by-case (e.g., unrecoverable defects).</li>
+      </ul>
+      <h3>5. Acceptable Use &amp; Restrictions</h3>
+      <ul>
+        <li>Do not use the extension for any unlawful purpose or to process content you have no right to use.</li>
+        <li>Do not attempt to bypass, crack, or circumvent license verification.</li>
+        <li>Do not redistribute or resell the extension or your license key.</li>
+      </ul>
+      <h3>6. Disclaimer &amp; Limitation of Liability</h3>
+      <p>PixPort is provided "as is", without warranties of any kind, express or implied. We do not guarantee that conversion results will meet every requirement or that the extension will be uninterrupted or error-free. To the maximum extent permitted by law, our total liability arising from your use of PixPort is limited to the amount you paid for it.</p>
+      <h3>7. Changes</h3>
+      <p>These terms may be updated from time to time; the current version is always available on this page. Continued use after an update constitutes acceptance.</p>
+      <h3>8. Contact</h3>
+      <p>Questions about these terms: <a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a></p>
+    </div>
+    <div class="legal lang-zh">
+      <p>生效日期：2026年8月 · 适用于 PixPort 扩展与 PixPort Pro 许可。</p>
+      <div class="card"><p><strong>摘要——一次买断 · 永久授权 · 支持5台设备 · 60天全额退款 · 无订阅。</strong></p></div>
+      <h3>1. 服务内容</h3>
+      <p>PixPort 是一款在用户设备本地完成图片格式转换的浏览器扩展。免费版包含单张图片转换；一次性购买「PixPort Pro」（$4.99 美元）可解锁批量转换、ZIP 打包、更多输出格式及尺寸控制。</p>
+      <h3>2. 授权范围</h3>
+      <ul>
+        <li>Pro 许可为个人、非独占、不可转让的永久授权。</li>
+        <li>最多可在五（5）台设备上激活供本人使用。</li>
+        <li>不得转售、再分发、共享或分许可您的密钥。</li>
+        <li>涉及盗版、欺诈或滥用退款的密钥可能被撤销。</li>
+      </ul>
+      <h3>3. 支付与交付</h3>
+      <p>支付由记录商户 Creem.io 处理，税费由其代缴。许可密钥即时显示在支付成功页并通过邮件发送。如未收到，请参见上方找回步骤或联系我们。</p>
+      <h3>4. 退款政策</h3>
+      <ul>
+        <li><strong>60天全额退款</strong>：购买后60天内随时发邮件至 <a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a> 并附支付凭证即可申请。</li>
+        <li>退款经 Creem.io 处理，通常 5-10 个工作日到账。</li>
+        <li>已退款的许可将被停用，应停止使用。</li>
+        <li>超过60天按个案评估（如无法修复的缺陷）。</li>
+      </ul>
+      <h3>5. 合理使用与限制</h3>
+      <ul>
+        <li>不得将扩展用于任何非法用途或处理您无权使用的图像内容。</li>
+        <li>不得试图绕过、破解或规避许可验证。</li>
+        <li>不得再分发或转售本扩展或您的许可密钥。</li>
+      </ul>
+      <h3>6. 免责声明与责任限制</h3>
+      <p>PixPort 按"现状"提供，不附带任何明示或默示保证。我们不保证转换结果满足所有要求，也不保证扩展不间断或无错误。在法律允许的最大范围内，因使用 PixPort 产生的全部责任以您支付的金额为上限。</p>
+      <h3>7. 条款变更</h3>
+      <p>本条款可能不时更新；最新版本始终发布于本页。更新后继续使用即视为接受。</p>
+      <h3>8. 联系方式</h3>
+      <p>条款相关问题：<a href="mailto:wgy117385@gmail.com">wgy117385@gmail.com</a></p>
+    </div>
+  </section>
+
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-links">
+      <a href="#privacy"><span class="lang-en">Privacy Policy</span><span class="lang-zh">隐私政策</span></a>
+      <a href="#terms"><span class="lang-en">Terms of Service</span><span class="lang-zh">服务条款</span></a>
+      <a href="mailto:wgy117385@gmail.com"><span class="lang-en">Support</span><span class="lang-zh">支持</span></a>
+    </div>
+    <div class="copyright">© 2026 PixPort · <span class="lang-en">Made by an independent developer</span><span class="lang-zh">由独立开发者打造</span> · v1.6</div>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var body = document.body;
+  var btns = document.querySelectorAll('.ls-btn');
+  function pref() {
+    var saved = localStorage.getItem('pixport-lang');
+    if (saved === 'en' || saved === 'zh') return saved;
+    return (navigator.language && navigator.language.toLowerCase().indexOf('zh') === 0) ? 'zh' : 'en';
+  }
+  function apply() {
+    var zh = pref() === 'zh';
+    body.classList.toggle('zh', zh);
+    document.documentElement.lang = zh ? 'zh-CN' : 'en';
+    btns.forEach(function (b) { b.classList.toggle('active', b.dataset.l === pref()); });
+  }
+  btns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      localStorage.setItem('pixport-lang', b.dataset.l);
+      apply();
+    });
+  });
+  apply();
+})();
+</script>
 </body>
 </html>
